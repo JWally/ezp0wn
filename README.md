@@ -82,7 +82,7 @@ n.b. this might have to change depending on how the site set everything up
   }
 ```
 
-### User-Exists-Response
+### User-DOES-NOT-Exist-Response
 
 ```json
 {"type": "UserNotFoundException", "message": "User does not exist"}
