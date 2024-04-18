@@ -3,11 +3,11 @@
 
 # AWS Cognito Account Enumeration Demonstration
 
-This Node.js script demonstrates an account enumeration vulnerability with AWS Cognito.
+This Node.js script demonstrates an account enumeration vulnerability with AWS Cognito _WITH DEFAULT SETTINGS_.
 
 ## Summary
 
-If your site uses AWS Cognito and your `clientId` is exposed:
+If your site uses AWS Cognito _and_ your `clientId` is exposed _and_ it is using the default settings:
 
 I can run a script to see who has accounts on your site - without rate limits.
 
@@ -88,30 +88,17 @@ n.b. this might have to change depending on how the site set everything up
 {"type": "UserNotFoundException", "message": "User does not exist"}
 ```
 
-## AWS Response
+## How To Fix
 
-I brought this up to AWS Security, who replied with the following:
+Set the `PreventUserExistenceErrors` to `
+
+I found this on the login page of a financial institution for the traditionally unbanked (payday lender / pawn shop) I was interviewing for who doesn't employ 2fa. I brought it up to them after the interview but never heard back.
+
+Thinking I found a solid vulnerability, I excitedly brought it up to AWS Security, who replied with the following:
 
 > Thank you for bringing your concern to our attention. We greatly appreciate and encourage reports from the security community worldwide.
-
 > We do not believe the behavior you describe in this report presents a security concern, rather, it is expected behavior.
-
 > You can use the PreventUserExistenceErrors setting of a user pool app client to enable or disable user existence related errors. See documentation below:
-
 > https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-managing-errors.html
 
-I don't think that the suggested solution would work since the attack-surface I'm using is the first-leg of the Secure Remote Password protocol. It has to respond with a payload containing `SRP_B` to work.
 
-## Possible Fixes - You
-
-I'm totally spitballing here, so please verify that this is safe with more qualified people than me before actually trying it. I don't know that this is "production grade", but could probably be hardened enough to get close.
-
-1. Get a new `clientId` and keep it secret
-2. Set up an end point that you control and can rate limit
-3. Route your browser's requests _through_ your end point to AWS instead of aiming it directly _at_ AWS. This should be safe since the user's password isn't ever actually sent over the wire (SRP)
-
-## Possible Fixes - AWS
-
-Here I'm really out of my depth, but I like it when people point out something wrong - and have a possible solution.
-
-This would have to be opt-in, but if all responses to this API method included a full payload, it would be impossible to distinguish when an account exists or doesn't exist. In the event that the account didn't exist, all of the cryptography related fields could be garbage data.
