@@ -90,7 +90,12 @@ n.b. this might have to change depending on how the site set everything up
 
 ## How To Fix
 
-Set the `PreventUserExistenceErrors` to `
+### 1.) Set `PreventUserExistenceErrors` to "ENABLED"
+
+tldr;
+```sh
+aws cognito-idp update-user-pool-client --user-pool-id {USER_POOL_ID} --client-id {POOL_CLIENT_ID} --prevent-user-existence-errors "ENABLED" --profile {PROFILE} --region {AWS_REGION}
+```
 
 I found this on the login page of a financial institution for the traditionally unbanked (payday lender / pawn shop) I was interviewing for who doesn't employ 2fa. I brought it up to them after the interview but never heard back.
 
