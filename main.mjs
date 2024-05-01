@@ -2,7 +2,7 @@ const FETCH_TIMEOUT_DURATION = 7500;
 const PROCESS_BATCH_SIZE = 7;
 
 const ENV_CLIENT_ID = "5b6a3***mldkr";
-
+const COGNITO_URL = "https://cognito-idp.us-east-2.amazonaws.com/";
 
 /**
  * Generates a large list of email addresses for testing purposes.
@@ -51,8 +51,7 @@ const fakeEmailAddressMaker = () => {
  * @returns {Promise<Object>} The response from the authentication service, including status and data.
  */
 const makeRequest = async (username) => {
-    // Authentication service URL
-    const url = "https://cognito-idp.us-east-2.amazonaws.com/";
+
 
     // Payload for the POST request
     let payload = {
@@ -79,7 +78,7 @@ const makeRequest = async (username) => {
         let timeoutId;
         let response = await Promise.race([
             // cURLing AWS Cognito
-            fetch(url,{
+            fetch(COGNITO_URL,{
                 method: "POST",
                 headers: headers,
                 body: JSON.stringify(payload)
